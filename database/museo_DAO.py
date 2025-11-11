@@ -29,7 +29,6 @@ class MuseoDAO:
         for row in cursor:
             museo = Museo(row["id"], row["nome"], row["tipologia"])
             result.append(museo)
-
         cursor.close()
         cnx.close()
         return result
