@@ -1,3 +1,4 @@
+
 import flet as ft
 from UI.alert import AlertManager
 
@@ -31,15 +32,32 @@ class View:
         self.page.update()
 
     def load_interface(self):
-        """ Crea e aggiunge gli elementi di UI alla pagina e la aggiorna. """
+        '''Crea e aggiunge gli elementi di UI alla pagina e la aggiorna.'''
         # --- Sezione 1: Intestazione ---
         self.txt_titolo = ft.Text(value="Musei di Torino", size=38, weight=ft.FontWeight.BOLD)
 
         # --- Sezione 2: Filtraggio ---
         # TODO
 
+        self.ddmuseo = ft.Dropdown(label="Museo",
+                                    options=[ft.dropdown.Option("Nessun filtro")],
+                                    width=300,
+                                    hint_text="Nessun filtro",
+                                    on_change=self.controller.handler_dropdown_change_museo
+                                    )
+        self.ddepoca = ft.Dropdown(label="Epoca",
+                                    options=[ft.dropdown.Option("Nessun filtro")],
+                                    hint_text="Nessun filtro",
+                                    width=300,
+                                    on_change=self.controller.handler_dropdown_change_epoca
+                                    )
+        self.btn_mostra_artefatti = ft.ElevatedButton(text="Mostra Artefatti",
+                                                      on_click=self.controller.mostra_artefatti)
+
         # Sezione 3: Artefatti
         # TODO
+        self.lista_artefatti = ft.ListView(expand = True, spacing = 10)
+
 
         # --- Toggle Tema ---
         self.toggle_cambia_tema = ft.Switch(label="Tema scuro", value=True, on_change=self.cambia_tema)
@@ -54,16 +72,21 @@ class View:
 
             # Sezione 2: Filtraggio
             # TODO
+            ft.Row(controls=[self.ddmuseo, self.ddepoca],spacing=30,alignment="center"),
+            self.btn_mostra_artefatti,
+            ft.Divider(),
+
 
             # Sezione 3: Artefatti
             # TODO
+            self.lista_artefatti
         )
 
         self.page.scroll = "adaptive"
         self.page.update()
 
     def cambia_tema(self, e):
-        """ Cambia tema scuro/chiaro """
+        '''Cambia tema scuro/chiaro'''
         self.page.theme_mode = ft.ThemeMode.DARK if self.toggle_cambia_tema.value else ft.ThemeMode.LIGHT
         self.toggle_cambia_tema.label = "Tema scuro" if self.toggle_cambia_tema.value else "Tema chiaro"
         self.page.update()
